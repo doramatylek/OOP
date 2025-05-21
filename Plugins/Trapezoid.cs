@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using OOP_laba_1;
 
 namespace Plugins
@@ -42,9 +36,7 @@ namespace Plugins
             {
                 using (Brush brush = new SolidBrush(Fill))
                 {
-                    // Рисуем заполненную трапецию
                     graphics.FillPolygon(brush, points);
-                    // Рисуем контур трапеции
                     graphics.DrawPolygon(pen, points);
                 }
             }
