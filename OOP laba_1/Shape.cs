@@ -10,8 +10,8 @@ namespace OOP_laba_1
 
         public Color penColor { get; set; }
         public float penWidth { get; set; }
-        public virtual Point startPoint { get; set; }
-        public virtual Point endPoint { get; set; }
+        public  Point startPoint { get; set; }
+        public  Point endPoint { get; set; }
 
       
         public Shape(Color color, float width)
