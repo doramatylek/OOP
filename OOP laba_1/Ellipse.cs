@@ -5,7 +5,7 @@ namespace OOP_laba_1
     {
         public Color fill { get; set; }
 
-        public Ellipse(Color color, Color fillColor, float penWidth) : base(color, penWidth)
+        public Ellipse(Color color, float penWidth, Color fillColor) : base(color, penWidth)
         {
             fill = fillColor;
         }

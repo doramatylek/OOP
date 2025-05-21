@@ -13,7 +13,7 @@ namespace Plugins
     {
         public Color Fill { get; set; }
 
-        public Trapezoid(Color color, Color fillColor, float penWidth)
+        public Trapezoid(Color color,  float penWidth, Color fillColor)
             : base(color, penWidth)
         {
             Fill = fillColor;
@@ -21,27 +21,23 @@ namespace Plugins
 
         public override void draw(Graphics graphics)
         {
-            // Рассчитываем ширину и высоту фигуры
+           
             int width = Math.Abs(endPoint.X - startPoint.X);
             int height = Math.Abs(endPoint.Y - startPoint.Y);
 
-            // Определяем направление рисования
             int directionX = endPoint.X > startPoint.X ? 1 : -1;
             int directionY = endPoint.Y > startPoint.Y ? 1 : -1;
-
-            // Рассчитываем смещение для создания трапеции (20% от ширины)
+ 
             int offset = (int)(width * 0.2f);
 
-            // Корректируем offset для минимального размера
+        
             if (width < 100) offset = 20;
 
-            // Определяем 4 точки трапеции
-            Point[] points = {
-        new Point(startPoint.X, startPoint.Y),                              // Верхний левый
-        new Point(endPoint.X, startPoint.Y),                                // Верхний правый
-        new Point(endPoint.X - (directionX * offset), endPoint.Y),          // Нижний правый (со смещением)
-        new Point(startPoint.X + (directionX * offset), endPoint.Y)         // Нижний левый (со смещением)
-    };
+           
+            Point[] points = {new Point(startPoint.X, startPoint.Y),                            
+                              new Point(endPoint.X, startPoint.Y),                                
+                              new Point(endPoint.X - (directionX * offset), endPoint.Y),          
+                              new Point(startPoint.X + (directionX * offset), endPoint.Y)};
             using (Pen pen = new Pen(penColor, penWidth))
             {
                 using (Brush brush = new SolidBrush(Fill))

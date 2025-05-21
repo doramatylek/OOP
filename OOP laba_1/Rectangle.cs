@@ -5,7 +5,7 @@ namespace OOP_laba_1
     public class Rectangle: Shape
     {
         public Color fill { get; set; }
-        public Rectangle(Color color, Color fillColor, float penWidth) : base(color, penWidth)
+        public Rectangle(Color color, float penWidth, Color fillColor) : base(color, penWidth)
         {
             fill = fillColor;
         }

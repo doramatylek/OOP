@@ -27,56 +27,20 @@ namespace OOP_laba_1
             _shapeTypes[name] = shapeType;
         }
 
-        public static Shape CreateShape(string shapeTypeName, Color penColor, Color fillColor, float penWidth, params object[] additionalArgs)
+        public static Shape CreateShape(string shapeTypeName, Color penColor, float penWidth, params object[] additionalArgs)
         {
             if (!_shapeTypes.TryGetValue(shapeTypeName, out Type shapeType))
                 throw new ArgumentException($"Тип фигуры '{shapeTypeName}' не зарегистрирован");
 
            
-            if (shapeType == typeof(Line))
-            {
-                return CreateLine(penColor, penWidth);
-            }
-
-            if (shapeType == typeof(Polyline))
-            {
-                return CreatePolyline(penColor, penWidth);
-            }
-
-           
-            return CreateStandardShape(shapeType, penColor, fillColor, penWidth, additionalArgs);
+            return CreateStandardShape(shapeType, penColor, penWidth, additionalArgs);
         }
 
-        private static Shape CreateLine(Color penColor, float penWidth)
+
+
+        private static Shape CreateStandardShape(Type shapeType, Color penColor, float penWidth, object[] additionalArgs)
         {
-            
-            var constructors = typeof(Line).GetConstructors();
-
-            var constructor = constructors.FirstOrDefault(c =>
-                c.GetParameters().Length == 2 &&
-                c.GetParameters()[0].ParameterType == typeof(Color) &&
-                c.GetParameters()[1].ParameterType == typeof(float));
-          
-                return (Line)constructor.Invoke(new object[] { penColor, penWidth });
-           
-        }
-
-        private static Shape CreatePolyline(Color penColor, float penWidth)
-        {
-           
-            var constructors = typeof(Polyline).GetConstructors();
-
-            var constructor = constructors.FirstOrDefault(c =>
-                c.GetParameters().Length == 2 &&
-                c.GetParameters()[0].ParameterType == typeof(Color) &&
-                c.GetParameters()[1].ParameterType == typeof(float));
-
-                return (Polyline)constructor.Invoke(new object[] { penColor, penWidth });
-        }
-
-        private static Shape CreateStandardShape(Type shapeType, Color penColor, Color fillColor, float penWidth, object[] additionalArgs)
-        {
-            var allArgs = new List<object> { penColor, fillColor, penWidth };
+            var allArgs = new List<object> { penColor, penWidth };
             if (additionalArgs != null)
             {
                 allArgs.AddRange(additionalArgs);

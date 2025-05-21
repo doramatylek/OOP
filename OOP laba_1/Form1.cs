@@ -41,8 +41,8 @@
                 shape = ShapeFactory.CreateShape(
                     currentShapeType,
                     color,
-                    fillColor,
                     penWidth,
+                    fillColor,
                     corners);
 
                 if (shape is Polyline polyline)

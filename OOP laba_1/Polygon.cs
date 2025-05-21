@@ -8,7 +8,7 @@ namespace OOP_laba_1
         public Color fill { get; set; }
         public int sides;
 
-        public Polygon(Color color, Color fillColor, float width, int n) : base(color, width)
+        public Polygon(Color color, float width,Color fillColor, int n) : base(color, width)
         {
             sides = n;
             fill = fillColor;
