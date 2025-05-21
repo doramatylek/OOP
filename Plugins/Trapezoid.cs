@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using OOP_laba_1;
+
+namespace Plugins
+{
+    public class Trapezoid : Shape
+    {
+        public Color Fill { get; set; }
+
+        public Trapezoid(Color color, Color fillColor, float penWidth)
+            : base(color, penWidth)
+        {
+            Fill = fillColor;
+        }
+
+        public override void draw(Graphics graphics)
+        {
+            // Рассчитываем ширину и высоту фигуры
+            int width = Math.Abs(endPoint.X - startPoint.X);
+            int height = Math.Abs(endPoint.Y - startPoint.Y);
+
+            // Определяем направление рисования
+            int directionX = endPoint.X > startPoint.X ? 1 : -1;
+            int directionY = endPoint.Y > startPoint.Y ? 1 : -1;
+
+            // Рассчитываем смещение для создания трапеции (20% от ширины)
+            int offset = (int)(width * 0.2f);
+
+            // Корректируем offset для минимального размера
+            if (width < 100) offset = 20;
+
+            // Определяем 4 точки трапеции
+            Point[] points = {
+        new Point(startPoint.X, startPoint.Y),                              // Верхний левый
+        new Point(endPoint.X, startPoint.Y),                                // Верхний правый
+        new Point(endPoint.X - (directionX * offset), endPoint.Y),          // Нижний правый (со смещением)
+        new Point(startPoint.X + (directionX * offset), endPoint.Y)         // Нижний левый (со смещением)
+    };
+            using (Pen pen = new Pen(penColor, penWidth))
+            {
+                using (Brush brush = new SolidBrush(Fill))
+                {
+                    // Рисуем заполненную трапецию
+                    graphics.FillPolygon(brush, points);
+                    // Рисуем контур трапеции
+                    graphics.DrawPolygon(pen, points);
+                }
+            }
+        }
+
+    }
+    }

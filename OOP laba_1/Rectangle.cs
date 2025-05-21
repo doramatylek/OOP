@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-
+﻿
 namespace OOP_laba_1
 {
+   
     public class Rectangle: Shape
     {
-        private PointF _topLeft;
-        private float _width;
-        private float _height;
-
-        public Rectangle(Color color, int width, PointF topLeft, float widthS, float heightS)
-            : base(color, width)
+        public Color fill { get; set; }
+        public Rectangle(Color color, Color fillColor, float penWidth) : base(color, penWidth)
         {
-            _topLeft = topLeft;
-            this._width = widthS;
-            this._height = heightS;
+            fill = fillColor;
         }
 
-        public override void Draw(Graphics graphics)
+      
+        public override void draw(Graphics graphics)
         {
-            using (Pen pen = new Pen(_color, _width))
+            Point leftCorner = new Point(Math.Min(startPoint.X, endPoint.X), Math.Min(startPoint.Y, endPoint.Y));
+            Point rightCorner = new Point(Math.Max(startPoint.X, endPoint.X), Math.Max(startPoint.Y, endPoint.Y));
+            using (Pen pen = new Pen(penColor, penWidth))
             {
-                graphics.DrawRectangle(pen, _topLeft.X, _topLeft.Y, _width, _height);
+                using (Brush brush = new SolidBrush(fill))
+                {
+                    graphics.FillRectangle(brush, leftCorner.X, leftCorner.Y, rightCorner.X - leftCorner.X, rightCorner.Y - leftCorner.Y);
+                    graphics.DrawRectangle(pen, leftCorner.X, leftCorner.Y, rightCorner.X - leftCorner.X, rightCorner.Y - leftCorner.Y);
+                }
             }
         }
     }

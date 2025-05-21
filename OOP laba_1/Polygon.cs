@@ -1,44 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿
 
 namespace OOP_laba_1
 {
+
     public class Polygon : Shape
     {
-        private int _sides;  
-        private float _radius; 
-        private PointF _center; 
+        public Color fill { get; set; }
+        public int sides;
 
-        public Polygon(Color color, int width, PointF center, int sides, float radius)
-            : base(color, width)
+        public Polygon(Color color, Color fillColor, float width, int n) : base(color, width)
         {
-            _sides = sides;
-            _radius = radius;
-            _center = center;
+            sides = n;
+            fill = fillColor;
         }
-
-       
-        public override void Draw(Graphics graphics)
+     
+        public override void draw(Graphics graphics)
         {
-            if (_sides < 3) return; 
+            PointF[] points = new PointF[sides];
+            double angle = 2 * Math.PI / sides;
 
-            PointF[] points = new PointF[_sides];
-            double angle = 2 * Math.PI / _sides; 
+            float radius = (float)Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
+            PointF center = new PointF(startPoint.X, startPoint.Y);
 
-            for (int i = 0; i < _sides; i++)
+            double rotationAngle = Math.Atan2(endPoint.Y - startPoint.Y, endPoint.X - startPoint.X) - Math.PI / 2;
+
+            for (int i = 0; i < sides; i++)
             {
-                float x = _center.X + (float)(Math.Cos(angle * i) * _radius);
-                float y = _center.Y + (float)(Math.Sin(angle * i) * _radius);
+                float x = center.X + (float)(Math.Cos(rotationAngle + angle * i) * radius);
+                float y = center.Y + (float)(Math.Sin(rotationAngle + angle * i) * radius);
                 points[i] = new PointF(x, y);
             }
 
-            using (Pen pen = new Pen(_color, _width))
+            using (Pen pen = new Pen(penColor, penWidth))
             {
-                graphics.DrawPolygon(pen, points);
+                using (Brush brush = new SolidBrush(fill))
+                {
+                    graphics.FillPolygon(brush, points);
+                    graphics.DrawPolygon(pen, points);
+                }
             }
         }
     }

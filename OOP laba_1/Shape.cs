@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿
+using System.Text.Json.Serialization;
 
 namespace OOP_laba_1
 {
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public abstract class Shape
     {
-        protected Color _color;
-        protected int _width;
 
-        protected Shape(Color color, int width)
+        public Color penColor { get; set; }
+        public float penWidth { get; set; }
+        public virtual Point startPoint { get; set; }
+        public virtual Point endPoint { get; set; }
+
+      
+        public Shape(Color color, float width)
         {
-            _color = color;
-            _width = width;
+            penColor = color;
+            penWidth = width;
         }
 
-        public abstract void Draw(Graphics graphics);
+        public abstract void draw(Graphics graphics);
     }
-
 
 
 }

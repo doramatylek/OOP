@@ -1,27 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿
 
 namespace OOP_laba_1
 {
-     public class Polyline : Shape
+ 
+    public class Polyline : Shape
     {
-        private Point[] _points;
+        private List<Point> points;
 
-        public Polyline(Color color, int width, Point[] points) : base(color, width)
+        public Polyline(Color color, float width) : base(color, width)
         {
-            _points = points;
+            points = new List<Point>();
+        }
+    
+        public void addPoint(Point point)
+        {
+            points.Add(point);
         }
 
-        public override void Draw(Graphics graphics)
+        public override void draw(Graphics graphics)
         {
-            using (Pen pen = new Pen(_color, _width))
+           
+
+            using (Pen pen = new Pen(penColor, penWidth))
             {
-                graphics.DrawLines(pen, _points);
+                graphics.DrawLine(pen, startPoint, endPoint);
+                if (points.Count > 1) 
+                { 
+                    graphics.DrawLines(pen, points.ToArray()); 
+                } 
+                
             }
         }
+
+    
     }
 }

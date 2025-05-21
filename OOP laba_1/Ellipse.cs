@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-
+﻿
 namespace OOP_laba_1
 {
-    
     public class Ellipse : Shape
     {
-        private PointF _topLeft;
-        private float _width;
-        private float _height;
+        public Color fill { get; set; }
 
-        public Ellipse(Color color, int width, PointF topLeft, float widthS, float heightS)
-            : base(color, width)
+        public Ellipse(Color color, Color fillColor, float penWidth) : base(color, penWidth)
         {
-            _topLeft = topLeft;
-            this._width = widthS;
-            this._height = heightS;
+            fill = fillColor;
         }
 
-        public override void Draw(Graphics graphics)
+        public override void draw(Graphics graphics)
         {
-            using (Pen pen = new Pen(_color, _width))
+            
+            int x = Math.Min(startPoint.X, endPoint.X);
+            int y = Math.Min(startPoint.Y, endPoint.Y);
+            int width = Math.Abs(endPoint.X - startPoint.X);
+            int height = Math.Abs(endPoint.Y - startPoint.Y);
+
+            using (Pen pen = new Pen(penColor, penWidth))
             {
-                graphics.DrawEllipse(pen, _topLeft.X, _topLeft.Y, _width, _height);
+                using (Brush brush = new SolidBrush(fill))
+                {
+                    graphics.FillEllipse(brush, x, y, width, height);
+                    graphics.DrawEllipse(pen, x, y, width, height);
+                }
             }
         }
     }
-
 }
