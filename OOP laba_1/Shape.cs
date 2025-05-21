@@ -1,10 +1,6 @@
 ﻿
-using System.Text.Json.Serialization;
-
 namespace OOP_laba_1
 {
-
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public abstract class Shape
     {
 

@@ -47,10 +47,7 @@ namespace OOP_laba_1
 
         public void serialize(string filePath)
         {
-            string json = JsonConvert.SerializeObject(shapes, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto 
-            });
+            string json = JsonConvert.SerializeObject(shapes, new JsonSerializerSettings{ TypeNameHandling = TypeNameHandling.Auto});
             File.WriteAllText(filePath, json);
         }
 
