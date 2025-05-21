@@ -27,24 +27,23 @@ namespace OOP_laba_1
             _shapeTypes[name] = shapeType;
         }
 
-        public static Shape CreateShape(string shapeTypeName, Color penColor, float penWidth, params object[] additionalArgs)
+        public static Shape CreateShape(string shapeTypeName, params object[] additionalArgs)
         {
             if (!_shapeTypes.TryGetValue(shapeTypeName, out Type shapeType))
                 throw new ArgumentException($"Тип фигуры '{shapeTypeName}' не зарегистрирован");
 
            
-            return CreateStandardShape(shapeType, penColor, penWidth, additionalArgs);
+            return CreateStandardShape(shapeType,  additionalArgs);
         }
 
 
 
-        private static Shape CreateStandardShape(Type shapeType, Color penColor, float penWidth, object[] additionalArgs)
+        private static Shape CreateStandardShape(Type shapeType,  object[] additionalArgs)
         {
-            var allArgs = new List<object> { penColor, penWidth };
-            if (additionalArgs != null)
-            {
+            var allArgs = new List<object> { };
+          
                 allArgs.AddRange(additionalArgs);
-            }
+          
 
             foreach (var constructor in shapeType.GetConstructors()
                 .OrderByDescending(c => c.GetParameters().Length))
