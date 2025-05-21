@@ -16,14 +16,6 @@ namespace OOP_laba_1
             redoStack.Clear();
            
         }
-        public void addPolyline(Shape shape)
-        {
-            shapes.Add(shape);
-            undoStack.Push(shape);
-            redoStack.Clear();
-            shape = null;
-        }
-     
 
         public void undo()
         {
