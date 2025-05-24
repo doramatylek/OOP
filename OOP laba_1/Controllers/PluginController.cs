@@ -1,30 +1,31 @@
-﻿using OOP_laba_1.Services;
+﻿using OOP_laba_1.Model;
+using OOP_laba_1.Services;
+using System;
 using System.Windows.Forms;
 
 namespace OOP_laba_1.Controllers
 {
     public class PluginController
     {
-        private readonly ToolStripDropDownButton _pluginsButton;
+        private readonly DrawingSettings _settings;
 
-        public PluginController(ToolStripDropDownButton pluginsButton)
+        public PluginController(DrawingSettings settings)
         {
-            _pluginsButton = pluginsButton;
+            _settings = settings;
         }
 
-        public string LoadPlugin(string dllPath)
+        public void LoadPlugin(string dllPath, ToolStripDropDownButton pluginButton)
         {
             try
             {
-                return PluginLoader.LoadPlugin(_pluginsButton, dllPath);
+                PluginLoader.LoadAndRegisterPlugin(dllPath, pluginButton, shapeName =>
+                {
+                    _settings.CurrentShapeType = shapeName;
+                });
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка в контроллере плагинов: {ex.Message}",
-                              "Ошибка",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Error);
-                return null;
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

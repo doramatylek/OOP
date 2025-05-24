@@ -1,6 +1,6 @@
 ﻿using OOP_laba_1.Model;
 using OOP_laba_1.Model.Shapes;
-using System.Drawing;
+
 
 namespace OOP_laba_1.Services
 {
@@ -26,17 +26,35 @@ namespace OOP_laba_1.Services
             _isDrawing = true;
             _startPoint = _endPoint = location;
 
-            _currentShape = ShapeFactory.CreateShape(
-                _settings.CurrentShapeType,
-                _settings.Color,
-                _settings.PenWidth,
-                _settings.FillColor,
-                _settings.Corners);
+            if (_currentShape == null || !_currentShape.isMultiClick)
+            {
+                _currentShape = ShapeFactory.CreateShape(
+                    _settings.CurrentShapeType,
+                    _settings.Color,
+                    _settings.PenWidth,
+                    _settings.FillColor,
+                    _settings.Corners);
+            }
 
             if (_currentShape.isMultiClick)
+            {
                 _currentShape.updateShape(location);
+            }
         }
 
+        public void CompleteDrawing()
+        {
+            if (!_isDrawing || _currentShape == null) return;
+
+           
+            if (!_currentShape.isMultiClick && IsValidShape())
+            {
+                SetShapePoints();
+                _shapeList.AddShape(_currentShape);
+                ResetCurrentShape();
+            }
+          
+        }
         public void UpdateDrawing(Point location)
         {
             if (!_isDrawing || _currentShape == null) return;
@@ -46,18 +64,7 @@ namespace OOP_laba_1.Services
                 _currentShape.endPoint = _endPoint;
         }
 
-        public void CompleteDrawing()
-        {
-            if (!_isDrawing || _currentShape == null) return;
-
-            if (!_currentShape.isMultiClick && IsValidShape())
-            {
-                SetShapePoints();
-                _shapeList.AddShape(_currentShape);
-            }
-
-            ResetCurrentShape();
-        }
+       
 
         public void Draw(Graphics graphics)
         {

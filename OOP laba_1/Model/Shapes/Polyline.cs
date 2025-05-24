@@ -28,6 +28,7 @@
         public override void updateShape(Point point)
         {
             points.Add(point);
+            endPoint = point;
         }
 
 

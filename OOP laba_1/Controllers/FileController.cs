@@ -1,6 +1,6 @@
 ﻿using OOP_laba_1.Model;
 using OOP_laba_1.Services;
-using System;
+
 
 namespace OOP_laba_1.Controllers
 {
@@ -10,7 +10,7 @@ namespace OOP_laba_1.Controllers
         {
             try
             {
-                ShapeSerializer.SaveShapes(shapeList, filePath);  // Прямой вызов статического метода
+                FileManager.SaveShapes(shapeList, filePath);  
             }
             catch (Exception ex)
             {
@@ -18,11 +18,11 @@ namespace OOP_laba_1.Controllers
             }
         }
 
-        public ShapeList LoadShapes(string filePath)
+        public void LoadShapes(ShapeList shapeList, string filePath)
         {
             try
             {
-                return ShapeSerializer.LoadShapes(filePath);  // Прямой вызов статического метода
+                FileManager.LoadShapes(shapeList, filePath);  
             }
             catch (Exception ex)
             {

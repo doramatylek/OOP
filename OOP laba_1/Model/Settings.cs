@@ -1,5 +1,4 @@
-﻿
-namespace OOP_laba_1.Model
+﻿namespace OOP_laba_1.Model
 {
     public class DrawingSettings
     {
@@ -7,6 +6,6 @@ namespace OOP_laba_1.Model
         public Color FillColor { get; set; } = Color.White;
         public float PenWidth { get; set; } = 1;
         public int Corners { get; set; } = 3;
-        public string CurrentShapeType { get; set; }
+        public string CurrentShapeType { get; set; } = null;
     }
 }

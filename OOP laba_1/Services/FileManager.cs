@@ -1,31 +1,60 @@
 ﻿using Newtonsoft.Json;
 using OOP_laba_1.Model;
-
+using OOP_laba_1.Model.Shapes;
+using System.Collections.Generic;
+using System.IO;
 
 namespace OOP_laba_1.Services
 {
-    public static class ShapeSerializer
+    public static class FileManager
     {
         public static void SaveShapes(ShapeList shapeList, string filePath)
         {
-            var json = JsonConvert.SerializeObject(shapeList);
-            File.WriteAllText(filePath, json);
+            try
+            {
+           
+                var shapesToSave = shapeList.GetShapes();
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    Formatting = Formatting.Indented
+                };
+
+                string json = JsonConvert.SerializeObject(shapesToSave, settings);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ошибка сохранения: {ex.Message}");
+            }
         }
 
-        public static ShapeList LoadShapes(string filePath)
+        public static void LoadShapes(ShapeList shapeList, string filePath)
         {
-            if (File.Exists(filePath))
+            try
             {
-                var json = File.ReadAllText(filePath);
-                var loadedShapeList = JsonConvert.DeserializeObject<ShapeList>(json);
+                string json = File.ReadAllText(filePath);
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                };
 
-                // Восстанавливаем состояние стеков (если необходимо)
-                loadedShapeList.RestoreStacks();
+              
+                var shapes = JsonConvert.DeserializeObject<List<Shape>>(json, settings);
 
-                return loadedShapeList;
+                foreach (var shape in shapes)
+                {
+                    shapeList.AddShape(shape);
+                }
+                shapeList.RestoreStacks();
+
+
+
             }
-            return new ShapeList(); // Возвращаем новый список, если файл не найден
-        
-    }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ошибка загрузки: {ex.Message}");
+            }
+        }
     }
 }

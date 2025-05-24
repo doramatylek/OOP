@@ -1,4 +1,5 @@
 ﻿using OOP_laba_1.Model.Shapes;
+
 using System.Reflection;
 
 
@@ -6,47 +7,32 @@ namespace OOP_laba_1.Services
 {
     public static class PluginLoader
     {
-        public static string LoadPlugin(ToolStripDropDownButton buttonPlugins, string dllPath) // Статический метод
+        public static void LoadAndRegisterPlugin(string dllPath, ToolStripDropDownButton pluginButton, Action<string> onShapeSelected)
         {
             try
             {
                 var assembly = Assembly.LoadFrom(dllPath);
-                var pluginShapes = assembly.GetTypes()
-                    .Where(t => t.IsSubclassOf(typeof(Shape)) && !t.IsAbstract)
-                    .Take(1) // Загружаем только первый найденный тип
-                    .ToList();
+                var shapeType = assembly.GetTypes()
+                    .FirstOrDefault(t => t.IsSubclassOf(typeof(Shape)) && !t.IsAbstract);
 
-                if (pluginShapes.Count > 0)
+                if (shapeType != null)
                 {
-                    var shapeType = pluginShapes[0]; // Получаем первый тип
                     string shapeName = shapeType.Name;
-
-                    // Регистрация фигуры с использованием метода из ShapeFactory
                     ShapeFactory.RegisterShape(shapeName, shapeType);
-
-                    var menuItem = new ToolStripMenuItem(shapeName);
-                    buttonPlugins.DropDownItems.Add(menuItem);
-
-                    return shapeName; // Возвращаем имя класса
+                    AddPluginButton(pluginButton, shapeName, onShapeSelected);
                 }
-                return null; // Если не найдено ни одной фигуры
-            }
-            catch (BadImageFormatException)
-            {
-                MessageBox.Show("Это не валидная DLL с плагинами",
-                                "Ошибка загрузки",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                return null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Не удалось загрузить плагин: {ex.Message}",
-                                "Ошибка",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                return null;
+                throw new Exception($"Ошибка загрузки плагина: {ex.Message}");
             }
+        }
+
+        private static void AddPluginButton(ToolStripDropDownButton pluginButton, string shapeName, Action<string> onClick)
+        {
+            var menuItem = new ToolStripMenuItem(shapeName);
+            menuItem.Click += (s, e) => onClick(shapeName);
+            pluginButton.DropDownItems.Add(menuItem);
         }
     }
 }

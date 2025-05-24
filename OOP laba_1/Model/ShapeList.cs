@@ -1,5 +1,4 @@
 ﻿using OOP_laba_1.Model.Shapes;
-using System.Drawing;
 
 namespace OOP_laba_1.Model
 {
@@ -9,6 +8,10 @@ namespace OOP_laba_1.Model
         private Stack<Shape> undoStack = new Stack<Shape>();
         private Stack<Shape> redoStack = new Stack<Shape>();
 
+        public List<Shape> GetShapes()
+        {
+            return new List<Shape>(shapes);
+        }
         public void AddShape(Shape shape)
         {
             shapes.Add(shape);
