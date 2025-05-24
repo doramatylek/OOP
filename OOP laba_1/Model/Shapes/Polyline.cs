@@ -1,22 +1,16 @@
-﻿
-
-namespace OOP_laba_1
+﻿namespace OOP_laba_1.Model.Shapes
 {
  
     public class Polyline : Shape
     {
         private List<Point> points;
-
+        public override bool isMultiClick { get; } = true;
         public Polyline(Color color, float width) : base(color, width)
         {
             points = new List<Point>();
         }
     
-        public void addPoint(Point point)
-        {
-            points.Add(point);
-        }
-
+       
         public override void draw(Graphics graphics)
         {
            
@@ -31,7 +25,12 @@ namespace OOP_laba_1
                 
             }
         }
+        public override void updateShape(Point point)
+        {
+            points.Add(point);
+        }
 
-    
+
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using OOP_laba_1;
+using OOP_laba_1.Model.Shapes;
 
 namespace Plugins
 {

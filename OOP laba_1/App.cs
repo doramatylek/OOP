@@ -1,5 +1,8 @@
 ﻿namespace OOP_laba_1
 {
+    using OOP_laba_1.Model;
+    using OOP_laba_1.Model.Shapes;
+    using OOP_laba_1.Services;
     using System;
     using System.Drawing;
     using System.Reflection;
@@ -45,16 +48,16 @@
                     fillColor,
                     corners);
 
-                if (shape is Polyline polyline)
+                if (shape.isMultiClick)
                 {
-                    polyline.addPoint(e.Location);
+                    shape.updateShape(e.Location);
                 }
             }
  
-            else if (shape is Polyline existingPolyline)
-            {
-                existingPolyline.addPoint(e.Location);
-            }
+            else if (shape.isMultiClick)
+                {
+                    shape.updateShape(e.Location);
+                }
 
             pictureBox.Refresh();
         }
@@ -66,14 +69,14 @@
 
             endPoint = e.Location;
          
-            if (!(shape is Polyline))
+            if (!shape.isMultiClick)
             {
                
                 if (Math.Abs(startPoint.X - endPoint.X) > 2 || Math.Abs(startPoint.Y - endPoint.Y) > 2)
                 {
                     shape.startPoint = startPoint;
                     shape.endPoint = endPoint;
-                    shapeList?.addShape(shape);
+                    shapeList?.AddShape(shape);
                 }
 
                 shape = null;
@@ -89,10 +92,11 @@
 
             endPoint = e.Location;
 
-            if (!(shape is Polyline))
+            if (shape.isMultiClick)
             {
                 shape.endPoint = endPoint;
-            }
+            };
+            
 
             pictureBox.Refresh();
         }
@@ -101,15 +105,19 @@
         {
             if (!isDrawing || shape == null)
                 return;
-            if (shape is Polyline polyline)
+        
+          
+            if (shape.isMultiClick)
             {
-                polyline.addPoint(endPoint);
+                shape.updateShape(endPoint);
             }
+            
+        
         }
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
-            shapeList.drawAll(e.Graphics);
+            shapeList.DrawAll(e.Graphics);
 
             if (shape != null)
             {
@@ -122,10 +130,10 @@
        
         private void pictureBox_DoubleClick(object sender, EventArgs e)
         {
-            if (shape is Polyline polyline)
+            if (shape.isMultiClick)
             {
-                polyline.addPoint(endPoint);
-                shapeList.addShape(shape);
+                shape.updateShape(endPoint);
+                shapeList.AddShape(shape);
                 shape = null;
                 isDrawing = false;
                 pictureBox.Refresh();
@@ -141,7 +149,7 @@
             {
                 try
                 {
-                    shapeList.deserialize(openFileDialog.FileName);
+                    shapeList=ShapeSerializer.LoadShapes(openFileDialog.FileName);
                     pictureBox.Refresh();
                 }
                 catch (Exception ex)
@@ -160,7 +168,7 @@
             {
                 try
                 {
-                    shapeList.serialize(saveFileDialog.FileName);
+                    ShapeSerializer.SaveShapes(shapeList, saveFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -169,40 +177,7 @@
             }
         }
 
-        private void LoadPlugins(string dllPath)
-        {
-            try
-            {
-                var assembly = Assembly.LoadFrom(dllPath);
-                var pluginShapes = assembly.GetTypes()
-                    .Where(t => t.IsSubclassOf(typeof(Shape)) && !t.IsAbstract);
-
-                foreach (var shapeType in pluginShapes)
-                {
-                    string shapeName = shapeType.Name;
-                    ShapeFactory.RegisterShape(shapeName, shapeType);
-
-                    var menuItem = new ToolStripMenuItem(shapeName);
-                    menuItem.Click += (s, e) => currentShapeType = shapeName;
-                    buttonPlugins.DropDownItems.Add(menuItem);
-                }
-            }
-            catch (BadImageFormatException)
-            {
-                MessageBox.Show("Это не валидная DLL с плагинами",
-                               "Ошибка загрузки",
-                               MessageBoxButtons.OK,
-                               MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Не удалось загрузить плагин: {ex.Message}",
-                               "Ошибка",
-                               MessageBoxButtons.OK,
-                               MessageBoxIcon.Error);
-            }
-        }
-       
+      
         private void importPluginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -212,7 +187,7 @@
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    LoadPlugins(openFileDialog.FileName);
+                    currentShapeType = PluginLoader.LoadPlugin(buttonPlugins, openFileDialog.FileName);
                 }
             }
         }
@@ -235,13 +210,13 @@
 
         private void buttonUndo_Click(object sender, EventArgs e)
         {
-            shapeList.undo();
+            shapeList.Undo();
             pictureBox.Refresh();
         }
 
         private void buttonRedo_Click(object sender, EventArgs e)
         {
-            shapeList.redo();
+            shapeList.Redo();
             pictureBox.Refresh();
         }
 

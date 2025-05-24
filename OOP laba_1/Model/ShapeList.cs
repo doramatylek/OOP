@@ -1,7 +1,7 @@
-﻿
-using Newtonsoft.Json;
+﻿using OOP_laba_1.Model.Shapes;
+using System.Drawing;
 
-namespace OOP_laba_1
+namespace OOP_laba_1.Model
 {
     public class ShapeList
     {
@@ -9,15 +9,14 @@ namespace OOP_laba_1
         private Stack<Shape> undoStack = new Stack<Shape>();
         private Stack<Shape> redoStack = new Stack<Shape>();
 
-        public void addShape(Shape shape)
+        public void AddShape(Shape shape)
         {
             shapes.Add(shape);
             undoStack.Push(shape);
             redoStack.Clear();
-           
         }
 
-        public void undo()
+        public void Undo()
         {
             if (undoStack.Count > 0)
             {
@@ -27,7 +26,7 @@ namespace OOP_laba_1
             }
         }
 
-        public void redo()
+        public void Redo()
         {
             if (redoStack.Count > 0)
             {
@@ -36,8 +35,7 @@ namespace OOP_laba_1
                 undoStack.Push(shape);
             }
         }
-
-        public void drawAll(Graphics graphics)
+        public void DrawAll(Graphics graphics)
         {
             foreach (var shape in shapes)
             {
@@ -45,25 +43,16 @@ namespace OOP_laba_1
             }
         }
 
-        public void serialize(string filePath)
+        public void RestoreStacks()
         {
-            string json = JsonConvert.SerializeObject(shapes, new JsonSerializerSettings{ TypeNameHandling = TypeNameHandling.Auto});
-            File.WriteAllText(filePath, json);
-        }
-
-        public void deserialize(string filePath)
-        {
-            string json = File.ReadAllText(filePath);
-            shapes = JsonConvert.DeserializeObject<List<Shape>>(json, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
             undoStack.Clear();
             redoStack.Clear();
+
             foreach (var shape in shapes)
             {
-                undoStack.Push(shape);
+                undoStack.Push(shape); 
             }
         }
+
     }
 }

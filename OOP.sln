@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP laba_1", "OOP laba_1\OOP laba_1.csproj", "{1C8DF763-9402-499D-9A25-57CB82E7668B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP", "OOP laba_1\OOP.csproj", "{1C8DF763-9402-499D-9A25-57CB82E7668B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins", "Plugins\Plugins.csproj", "{0B4B2E67-6C2E-4D1A-9646-E03EB9FDF7E1}"
 EndProject

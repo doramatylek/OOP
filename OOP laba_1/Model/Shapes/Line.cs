@@ -1,6 +1,4 @@
-﻿
-
-namespace OOP_laba_1
+﻿namespace OOP_laba_1.Model.Shapes
 {
    
     public class Line : Shape

@@ -1,5 +1,6 @@
-﻿
-namespace OOP_laba_1
+﻿using OOP_laba_1.Model.Shapes;
+
+namespace OOP_laba_1.Services
 {
     public static class ShapeFactory
     {
@@ -14,7 +15,7 @@ namespace OOP_laba_1
         {
             _shapeTypes["Line"] = typeof(Line);
             _shapeTypes["Ellipse"] = typeof(Ellipse);
-            _shapeTypes["Rectangle"] = typeof(Rectangle);
+            _shapeTypes["Rectangle"] = typeof(Model.Shapes.Rectangle);
             _shapeTypes["Polygon"] = typeof(Polygon);
             _shapeTypes["Polyline"] = typeof(Polyline);
         }
@@ -35,8 +36,6 @@ namespace OOP_laba_1
            
             return CreateStandardShape(shapeType,  additionalArgs);
         }
-
-
 
         private static Shape CreateStandardShape(Type shapeType,  object[] additionalArgs)
         {

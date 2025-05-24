@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OOP laba_1\OOP laba_1.csproj" />
+    <ProjectReference Include="..\OOP laba_1\OOP.csproj" />
   </ItemGroup>
 
 </Project>
