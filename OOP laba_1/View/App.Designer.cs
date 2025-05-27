@@ -331,7 +331,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
-            Text = "OOP laba 1";
+            Text = "OOP";
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

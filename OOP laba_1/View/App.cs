@@ -10,12 +10,10 @@
     {
         #region Поля и конструктор
 
-        // Контроллеры
         private readonly DrawingController _drawingController;
         private readonly FileController _fileController;
         private readonly PluginController _pluginController;
 
-        // Модели
         private ShapeList _shapeList = new ShapeList();
         private DrawingSettings _settings = new DrawingSettings();
 
@@ -23,7 +21,6 @@
         {
             InitializeComponent();
 
-            // Инициализация сервисов и контроллеров
             var drawingService = new DrawingShapes(_shapeList, _settings);
             _drawingController = new DrawingController(drawingService);
             _fileController = new FileController();
